@@ -1,4 +1,9 @@
 # cintel-06-continuous-intelligence
+## Continuous Intelligence Module 6
+## by Jarred Gastreich, April 2026
+## Updates:
+Modified project code in Step 2 to create a user-friendly message when "not a number" appears.
+
 
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://denisecase.github.io/cintel-06-continuous-intelligence/)
 [![CI Status](https://github.com/denisecase/cintel-06-continuous-intelligence/actions/workflows/ci-python-zensical.yml/badge.svg?branch=main)](https://github.com/denisecase/cintel-06-continuous-intelligence/actions/workflows/ci-python-zensical.yml)
