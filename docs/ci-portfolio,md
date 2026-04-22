@@ -1,0 +1,112 @@
+# Continuous Intelligence Portfolio
+
+Jarred Gastreich
+
+2026-04
+
+This page summarizes my work on **continuous intelligence** projects where I developed skills to continuously monitor data and develop features to assess the performance of the raw data using signal design, anomaly detection, rolling windows, and drift detection.
+
+## 1. Professional Project
+
+### Repository Link
+
+https://github.com/jarjarredred/cintel-06-continuous-intelligence
+
+### Brief Overview of Project Tools and Choices
+This project serves as the culmination of the course, integrating simulated live data streaming with automated analysis. I utilized Python as the core engine, leveraging Pandas for transformation and Matplotlib/Seaborn for visualization. The architecture was designed to simulate a production environment where data is ingested in chunks, processed through a signal pipeline, and monitored for performance degradation or environmental shifts. This module, along with the others, focused on a clean project setup using git, VS Code, and uv.
+
+## 2. Anomaly Detection
+
+### Repository Link
+
+https://github.com/jarjarredred/cintel-02-static-anomalies
+
+### Techniques
+Anomalies were detected using statistical thresholding, specifically the Z-score method and Interquartile Range (IQR). By calculating the mean and standard deviation of the dataset, I flagged observations falling more than 3 standard deviations from the norm.
+
+### Artifacts
+https://github.com/jarjarredred/cintel-02-static-anomalies/tree/main/artifacts
+Contains CSV files of flagged outliers and PNG visualizations highlighting "red-flag" data points. In my first alteration, I adjusted max age and max height. In my second alteration, I manipulated the threshold code from | to &.
+
+### Insights
+
+The analysis revealed that extreme outliers were often concentrated in specific time intervals, suggesting localized system spikes rather than random sensor noise. Modifing age and height resulted in accruate anomalies that caught additional anomalies that the standard code did not. Including the "&" code resulted in fewer anomalies that showed clients that met both max thresholds.
+
+## 3. Signal Design
+
+### Repository Link
+
+https://github.com/jarjarredred/cintel-03-signal-design
+
+### Signals
+
+Rate of Change (ROC): To identify sudden momentum shifts.
+
+Volatility (Standard Deviation): To assess signal stability.
+
+Threshold Crossings: Custom binary signals to trigger alerts when data exceeded safety parameters.
+
+### Artifacts
+
+https://github.com/jarjarredred/cintel-03-signal-design/tree/main/artifacts
+Includes csv files containing the calculated features and comparative plots of raw data vs. processed signals.
+
+### Insights
+
+By transforming raw data into signals, I was able to reduce "noise" and identify actionable trends that were invisible in the raw univariate series. First modified the error rate to display as a percentage instead of a decimal for readability. Then modified the signals to catch success rate and engineered features to provide a new collumn output to show health report of the latency because seeing raw numbers may not be human-friendly. The health reports for the original data was all "healthy", so I added additional data points to generate "warning" and "critical" health reports. The new output is more human-friendly because it displays the success rate in a easier to read format and the latency is categorized in three levels for humans to understand if there is a concern or not.
+
+## 4. Rolling Monitoring
+
+### Repository Link
+
+https://github.com/jarjarredred/cintel-04-rolling-monitoring
+
+### Techniques
+
+I implemented Rolling Windows (Simple Moving Averages) to smooth short-term fluctuations and highlight long-term trends. This involved calculating metrics over fixed time-steps (e.g., 5-unit or 10-unit windows) to maintain a "sliding" view of the data's health.
+
+### Artifacts
+https://github.com/jarjarredred/cintel-04-rolling-monitoring/tree/main/artifacts
+Contains csv files with time-series charts showing the raw signal overlaid with its rolling mean and variance.
+
+### Insights
+
+The rolling variance proved to be a leading indicator of upcoming anomalies; as the window's variance expanded, a system spike usually followed shortly after. In my customization, I Added a rolling standard deviation collumn and tracked rolling error rate percentage. The rolling standard deviations vary significantly from 0.5 to 2.0, and the error rate varies from 1.5 to 3.8. This is a good indicators to detecting problem areas. The error rate percentage is a wonderful customer experience feature to show the quality service indicators. The standard deviation feature tracks volatility or system risk and predictability. In business it can be more costly to operate on unpredictability.
+
+## 5. Drift Detection
+
+### Repository Link
+
+https://github.com/jarjarredred/cintel-05-drift-detection
+
+### Techniques
+
+I compared a Reference Period (historical baseline) against a Current Period (live data) using distribution comparisons. Significant shifts in the mean or distribution shape indicated that the underlying data-generating process had changed.
+
+### Artifacts
+https://github.com/jarjarredred/cintel-05-drift-detection/tree/main/artifacts
+Drift reports showing the statistical divergence between periods and "Drift Detected" alert logs. Long versions provided to display in a different format.
+
+### Insights
+
+Drift detection revealed that the data's baseline had fundamentally shifted over time, meaning old anomaly thresholds were no longer valid. This highlights the need for dynamic thresholding in production systems. In the original script, we just flagged if drift happened. In this modification, I added a "Drift Severity Score". Instead of just a true/false flag, I calculated the percentage change relative to the baseline. This helps prioritize which metric is failing most. This allows me to easily access which of our system metrics is deviating most from the norm. Then, We could trigger a warning if the errors_pct_change is greater than 50%, for example.
+
+## 6. Continuous Intelligence Pipeline
+
+### Repository Link
+
+https://github.com/jarjarredred/cintel-06-continuous-intelligence
+
+### Techniques
+
+This pipeline combined the previous modules into a single execution flow. It streams data, calculates custom signals, applies rolling windows for smoothing, and monitors for both point-anomalies and long-term drift simultaneously.
+
+### Artifacts
+
+https://github.com/jarjarredred/cintel-06-continuous-intelligence/tree/main/artifacts
+Contains csv files monitoring the health status of the system.
+
+
+### Assessment
+
+The pipeline indicates that while the system is currently stable, there is a moderate upward drift in the "Rate of Change" signal. This suggests the system is under increasing load and may require preventative maintenance before a critical anomaly occurs. In my customization, Instead of doing a simple threshold check, the new problem to address could be a trend analsys and assessing resource efficiency. Calculated a cost-per-request signal and used a rolling average to detect if system is drifting towards "instability". Using the same metric data, the output file identified some periods of time that indicated the system was drifting towards instability and some periods of time when it was stable. Now, A user can readily assess whether the system is in danger without during further calculations.
